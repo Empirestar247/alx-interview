@@ -1,30 +1,15 @@
-#!/usr/bin/python3
-"""UTF-8 Validation"""
+#!/usr/bin/env fish
+python3 -m doctest -v (basename (status -f))
+exit
+"""
+>>> validUTF8 = __import__('0-validate_utf8').validUTF8
+>>> print(validUTF8([65]))
+True
 
+>>> print(validUTF8([80, 121, 116, 104, 111, 110, 32, 105, 115, 32, 99, 111, 111, 108, 33]))
+True
 
-def validUTF8(data):
-    """
-    method that determines if a given data set
-    represents a valid UTF-8 encoding
-    """
-    nbytes = 0
+>>> print(validUTF8([229, 65, 127, 256]))
+False
 
-    b1 = 1 << 7
-    b2 = 1 << 6
-
-    for i in data:
-        b = 1 << 7
-        if nbytes == 0:
-            while b & i:
-                nbytes += 1
-                b = b >> 1
-            if nbytes == 0:
-                continue
-            if nbytes == 1 or nbytes > 4:
-                return False
-        else:
-            if not (i & b1 and not (i & b2)):
-                return False
-        nbytes -= 1
-    return nbytes == 0
-
+"""
